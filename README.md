@@ -29,6 +29,29 @@
 8. Run container without running server - good for debugging
     * docker-compose run --rm --service-ports dev bash -l
 
+### Example Usage:
+
+1. Get token:
+```bash
+curl -X POST \
+  http://localhost:3000/api/v1/oauth/token \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+"grant_type":"password",
+"username":"test",
+"password": "test"
+}'
+```
+
+2. Request sounds:
+```bash
+curl -X GET \
+  http://localhost:3000/api/v1/sounds \
+  -H 'authorization: Bearer YOUR_TOKEN' \
+  -H 'cache-control: no-cache'
+```
+
 ### Tests:
 * To run whole test suite
     * docker-compose run --rm test
