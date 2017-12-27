@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: database
+  port: 5432
+  pool: 5
+
+development:
+  <<: *default
+  database: soundcloud_dev
+
+test:
+  <<: *default
+  database: soundcloud_test
+
+production:
+  <<: *default
+  database: <%= ENV['DATABASE_NAME'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  pool: 64

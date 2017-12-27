@@ -1,0 +1,33 @@
+webapp:
+  build: ./
+  volumes:
+    - ./:/home/app/:cached
+  environment:
+    DATABASE_PASSWORD: password
+
+dev:
+  extends:
+    service: webapp
+  links:
+    - database
+  ports:
+    - "3000:3000"
+  environment:
+    RAILS_ENV: development
+    DATABASE_PASSWORD: password
+    SECRET_KEY_BASE: fa2a272bcda75ae247910de2b264d2c310741b64e65e309ebff039875c46aa22d3cefbdced8700b1012c077be07f4d08196f12c6c5773a018160e8dbd69c0207
+  command: /bin/bash -l -c "bundle exec rake db:reset db:seed && bundle exec rails s -b 0.0.0.0"
+
+test:
+  extends:
+    service: webapp
+  links:
+    - database
+  environment:
+    RAILS_ENV: test
+  command: /bin/bash -l -c "bundle exec rake db:create db:migrate && bundle exec rspec spec"
+
+database:
+  image: mdillon/postgis:9.4
+  environment:
+    POSTGRES_PASSWORD: password
